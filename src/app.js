@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const {
   NODE_ENV
 } = require('./config');
+const validateBearerToken = require('./validate-bearer-token')
 const foldersRouter = require('./folders/folders-router')
 const notesRouter = require('./notes/notes-router')
 const app = express();
@@ -21,16 +22,7 @@ app.use(helmet());
 app.use(cors());
 app.use(foldersRouter);
 app.use(notesRouter);
-/* app.get('/api/notes', (req, res, next) =>{
-  const knexInstance = req.app.get('db');
-  knexInstance
-  .select('*')
-  .from('noteful_notes')
-   .then(folders =>{
-    res.json(folders)
-  })
-.catch(next);
-}) */
+app.use(validateBearerToken);
 app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
